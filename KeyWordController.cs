@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using TPMRTweb.Models;
 using ClosedXML.Excel;
 using System.Text.Json;
-using System.Diagnostics;
 using System.Globalization;
-using Microsoft.EntityFrameworkCore;
 
 namespace TPMRTweb.Controllers
 {
@@ -42,34 +40,19 @@ namespace TPMRTweb.Controllers
             { "No Communication", "No Comm" }
         };
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var allKeywordStats = await _context.KeywordStatistics.ToListAsync();
-
-            var keywordStats = allKeywordStats
-                .GroupBy(k => k.Date)
-                .OrderBy(g => g.Key)
-                .Select(g => new KeywordStatisticPerDay
-                {
-                    Date = g.Key,
-                    KeywordCounts = g
-                        .GroupBy(x => x.Keyword)
-                        .ToDictionary(
-                            x => x.Key,
-                            x => x.Sum(y => y.Count)
-                        )
-                })
-                .ToList();
-
-            // 使用預定義的 KeywordDisplayNames
+            // 初始頁面不顯示任何資料
             var viewModel = new KeywordResultView
             {
-                StatisticsPerDay = keywordStats,
-                KeywordDisplayNames = KeywordDisplayNames  // 確保使用類別級別定義的 KeywordDisplayNames
+                StatisticsPerDay = new List<KeywordStatisticPerDay>(),
+                KeywordDisplayNames = KeywordDisplayNames
             };
 
+            ViewBag.Message = "請先選擇欲查詢的日期區間";
             return View(viewModel);
         }
+
 
 
 
@@ -231,22 +214,21 @@ namespace TPMRTweb.Controllers
             }
 
             var keywordStats = _context.KeywordStatistics
-            .Where(k => k.Date.Date >= startDate.Date && k.Date.Date <= endDate.Date)  // 只比較日期部分
-            .AsEnumerable()  // 確保進一步處理在內存中進行
-            .GroupBy(k => k.Date.Date)  // 按日期分組，忽略時間部分
-            .OrderBy(g => g.Key)
-            .Select(g => new KeywordStatisticPerDay
-            {
-                Date = g.Key,
-                KeywordCounts = g
-                    .GroupBy(x => x.Keyword)
-                    .ToDictionary(
-                        x => x.Key,
-                        x => x.Sum(y => y.Count)
-                    )
-            })
-            .ToList();
-
+                .Where(k => k.Date.Date >= startDate.Date && k.Date.Date <= endDate.Date)  // 只比較日期部分
+                .AsEnumerable()  // 確保進一步處理在內存中進行
+                .GroupBy(k => k.Date.Date)  // 按日期分組，忽略時間部分
+                .OrderBy(g => g.Key)
+                .Select(g => new KeywordStatisticPerDay
+                {
+                    Date = g.Key,
+                    KeywordCounts = g
+                        .GroupBy(x => x.Keyword)
+                        .ToDictionary(
+                            x => x.Key,
+                            x => x.Sum(y => y.Count)
+                        )
+                })
+                .ToList();
 
             if (!keywordStats.Any())
             {
@@ -263,6 +245,7 @@ namespace TPMRTweb.Controllers
             TempData["KeywordResult"] = JsonSerializer.Serialize(viewModel);
             return View("Index", viewModel);
         }
+
 
 
         public IActionResult ExportToExcel()
