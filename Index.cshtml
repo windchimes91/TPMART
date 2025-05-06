@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TPMRTweb.Models.TrainTransferRecord>
+@model IEnumerable<TPMRTweb.Models.TrainTransferRecord>
 
 @{
     ViewData["Title"] = "列車正線運轉紀錄";
@@ -7,42 +7,51 @@
 
 <div class="container-xl">
     <div class="webstatediv">
-        <a href="@Url.Action("Index","Home")"><img src="/images/home.png" alt="首頁" /></a> <a href="@Url.Action("Index","Home")">HOME</a> / B 列車正線運轉紀錄
+        <a href="@Url.Action("Index","Home")"><img src="/images/home.png" alt="首頁" /></a>
+        <a href="@Url.Action("Index","Home")">HOME</a> / B 列車正線運轉紀錄
         <div class="clear"></div>
     </div>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
     <style>
         #timeline {
             width: 100%;
             height: 600px;
         }
     </style>
+
     <h1>B.列車正線運轉紀錄</h1>
     <div class="clear"></div>
 
-    @* <table class="table table-striped"> *@
-    @*     <thead> *@
-    @*         <tr> *@
-    @*             <th>Train No</th> *@
-    @*             <th>Start Time</th> *@
-    @*             <th>End Time</th> *@
-    @*         </tr> *@
-    @*     </thead> *@
-    @*     <tbody> *@
-    @*         @foreach (var record in Model) *@
-    @*         { *@
-    @*             <tr> *@
-    @*                 <td>@record.Train.TrainNo</td> *@
-    @*                 <td>@record.StartTime</td> *@
-    @*                 <td>@record.EndTime</td> *@
-    @*             </tr> *@
-    @*         } *@
-    @*     </tbody> *@
-    @* </table> *@
+    
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>日期查詢</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="SearchByDate" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">開始日期</label>
+                    <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">結束日期</label>
+                    <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary form-control">查詢</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     @if (Model != null && Model.Any())
     {
         <div id="timeline"></div>
+
         <script type="text/javascript">
             google.charts.load('current', { 'packages': ['timeline'] });
             google.charts.setOnLoadCallback(drawChart);
@@ -57,25 +66,38 @@
                 dataTable.addColumn({ type: 'date', id: 'Start' });
                 dataTable.addColumn({ type: 'date', id: 'End' });
 
-                dataTable.addRows([
-            @foreach (var record in Model)
-            {
-                if (record.StartTime.HasValue && record.EndTime.HasValue && record.Train?.TrainNo != null)
+                var rows = [];
+
+                @foreach (var record in Model)
                 {
-                    var startDate = new DateTime(2025, 4, 17, record.StartTime.Value.Hours, record.StartTime.Value.Minutes, record.StartTime.Value.Seconds);
-                    var endDate = new DateTime(2025, 4, 17, record.EndTime.Value.Hours, record.EndTime.Value.Minutes, record.EndTime.Value.Seconds);
-                    if (record.EndTime < record.StartTime)
+                    if (record.StartTime.HasValue && record.EndTime.HasValue && record.Train?.TrainNo != null)
                     {
-                        endDate = endDate.AddDays(1);
+                        var start = record.StartTime.Value;
+                        var end = record.EndTime.Value;
+                        <text>
+                        rows.push([
+                            '@record.Train.TrainNo',
+                            '@record.Train.TrainNo',
+                            new Date(@start.Year, @(start.Month - 1), @start.Day, @start.Hour, @start.Minute, @start.Second),
+                            new Date(@end.Year, @(end.Month - 1), @end.Day, @end.Hour, @end.Minute, @end.Second)
+                        ]);
+                        </text>
                     }
-                    <text>
-                                        ['@record.Train.TrainNo', '@record.Train.TrainNo',
-                                         new Date(@startDate.Year, @startDate.Month - 1, @startDate.Day, @startDate.Hour, @startDate.Minute, @startDate.Second),
-                                         new Date(@endDate.Year, @endDate.Month - 1, @endDate.Day, @endDate.Hour, @endDate.Minute, @endDate.Second)],
-                    </text>
                 }
-            }
-                ]);
+
+                // 跨日修正
+                for (var i = 0; i < rows.length; i++) {
+                    var startTime = rows[i][2];
+                    var endTime = rows[i][3];
+
+                    if ((endTime.getHours() < startTime.getHours()) ||
+                        (endTime.getHours() === startTime.getHours() && endTime.getMinutes() < startTime.getMinutes())) {
+                        endTime.setDate(endTime.getDate() + 1);
+                        rows[i][3] = endTime;
+                    }
+                }
+
+                dataTable.addRows(rows);
 
                 var options = {
                     timeline: {
@@ -89,6 +111,11 @@
             }
         </script>
     }
-
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+    }
 </div>
 <div class="clear"></div>
