@@ -1,0 +1,43 @@
+﻿@model TPMRTweb.Models.WLineDailyOperationStatus
+
+@{
+    ViewData["Title"] = "文湖線每日行車運轉狀況 - 預覽";
+}
+
+<h2>文湖線每日行車運轉狀況</h2>
+
+<p><strong>日期：</strong>@DateTime.Now.ToString("yyyy/MM/dd")</p>
+<p><strong>主任控制員：</strong>@Model.MainController</p>
+
+<h3>一、營運重要事件摘錄</h3>
+@if (Model.EventGroups != null)
+{
+    foreach (var group in Model.EventGroups)
+    {
+        <p><strong>@group.Title</strong></p>
+        foreach (var entry in group.TimeEntries)
+        {
+            <p>時間：@entry.Time</p>
+            <p>內容：@entry.Content</p>
+        }
+    }
+}
+
+<h3>二、行車延誤統計</h3>
+<ul>
+    <li>延誤5分鐘以上事件：@Model.TrainDelay5 件</li>
+    <li>延誤1分30秒～5分鐘事件：@Model.TrainDelay130 件</li>
+    <li>延誤5分鐘以上不可抗力事件：@Model.TrainDelay5NBlameworthy 件</li>
+    <li>延誤1分30秒～5分鐘不可抗力事件：@Model.TrainDelay130NBlameworthy 件</li>
+</ul>
+
+<h3>三、急待解決事項</h3>
+<p>@(string.IsNullOrEmpty(Model.Pending) ? "無" : Model.Pending)</p>
+
+<!-- 可加上更多資料區塊 -->
+
+<form asp-action="ExportToWord" method="post">
+    <input type="hidden" asp-for="MainController" />
+    <!-- 對 EventGroups、TrainDelay5 等需要用 hidden field 或 JavaScript JSON 傳遞 -->
+    <button type="submit" class="btn btn-primary">下載 Word</button>
+</form>
