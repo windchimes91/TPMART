@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using TPMRTweb.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,66 +14,44 @@ public class TrainTransferRecordController : Controller
     }
     public IActionResult Index()
     {
-        var records = _context.TrainTransferRecords
-                             .Include(r => r.Train)
-                             .ToList();
-        return View(records);
+        ViewBag.Message = "請先選擇欲查詢的日期區間";
+        return View(new List<TrainTransferRecord>());
     }
 
-
-    public IActionResult Upload(IFormFile file)
+    public IActionResult SearchByDate(DateTime? startDate, DateTime? endDate)
     {
-        var records = new List<TrainTransferRecord>();
-
-        if (file != null && file.Length > 0)
+        if (!startDate.HasValue || !endDate.HasValue)
         {
-            using var stream = file.OpenReadStream();
-            using var workbook = new XLWorkbook(stream);
-            var worksheet = workbook.Worksheet(1);
-
-            var rows = worksheet.RangeUsed().RowsUsed().Skip(1); // Skip header
-            foreach (var row in rows)
-            {
-                var trainNo = row.Cell(1).GetString();
-
-                // Assuming columns are TrainNo, StartTime1, EndTime1, StartTime2, EndTime2, etc.
-                // Adjust the loop to handle pairs of start/end times
-                for (int i = 0; i < (worksheet.LastColumnUsed().ColumnNumber() - 1) / 2; i++)
-                {
-                    var startCell = row.Cell(2 + i * 2);
-                    var endCell = row.Cell(3 + i * 2);
-
-                    var startValue = startCell.GetValue<string>();
-                    var endValue = endCell.GetValue<string>();
-
-                    if (TimeSpan.TryParse(startValue, out TimeSpan startTime) &&
-                        TimeSpan.TryParse(endValue, out TimeSpan endTime))
-                    {
-                        // Find or create the Train entity
-                        var train = _context.Trains.FirstOrDefault(t => t.TrainNo == trainNo);
-                        if (train == null)
-                        {
-                            train = new Train { TrainNo = trainNo };
-                            _context.Trains.Add(train);
-                            _context.SaveChanges(); // Save to get TrainId
-                        }
-
-                        records.Add(new TrainTransferRecord
-                        {
-                            TrainId = train.TrainId, // Set the foreign key
-                            Train = train, // Optional: set navigation property
-                            StartTime = startTime,
-                            EndTime = endTime
-                        });
-                    }
-                }
-            }
-
-            // Save records to the database
-            _context.TrainTransferRecords.AddRange(records);
-            _context.SaveChanges();
+            ViewBag.Message = "請選擇開始和結束日期";
+            return View("Index", new List<TrainTransferRecord>());
         }
+
+        if (startDate > endDate)
+        {
+            ViewBag.Message = "開始日期不能晚於結束日期";
+            return View("Index", new List<TrainTransferRecord>());
+        }
+
+        // 設定時間範圍的起始和結束
+        var startDateTime = startDate.Value.Date;
+        var endDateTime = endDate.Value.Date.AddDays(1).AddSeconds(-1); // 設為當天最後一秒
+
+        // 查詢資料庫，根據 StartTime 日期範圍過濾
+        var records = _context.TrainTransferRecords
+                             .Include(r => r.Train)
+                             .Where(r => r.StartTime >= startDateTime && r.StartTime <= endDateTime)
+                             .ToList();
+
+        if (!records.Any())
+        {
+            ViewBag.Message = "查詢區間內無資料";
+        }
+
+        ViewBag.StartDate = startDate.Value.ToString("yyyy-MM-dd");
+        ViewBag.EndDate = endDate.Value.ToString("yyyy-MM-dd");
 
         return View("Index", records);
     }
+
+   
 }
