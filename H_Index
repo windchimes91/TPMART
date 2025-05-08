@@ -1,11 +1,7 @@
-@model WLineDailyOperationStatus
+@model TPMRTweb.Models.WLineDailyOperationStatus
 @{
     ViewData["Title"] = "文湖線每日行車運轉狀況";
     Layout = "user_Layout";
-    var now = DateTime.Now;
-    var rocYear = now.Year - 1911;
-    var dayOfWeek = now.ToString("dddd", new System.Globalization.CultureInfo("zh-TW"));
-    var rocDate = $"民國 {rocYear} 年 {now.Month} 月 {now.Day} 日 {dayOfWeek}";
 }
 
 <div class="container-xl">
@@ -15,26 +11,27 @@
     </div>
     <h1>H.文湖線每日行車運轉狀況</h1>
     <div class="clear"></div>
-    <div class="col-md-6">
-        <table>
-            <tr>
-                <td><strong> @rocDate</strong></td>
-                <td>天氣</td>
-                <td>
-                    <select>
-                        <option>晴天</option>
-                        <option>陰天</option>
-                        <option>陰雨</option>
-                        <option>雨天</option>
+    <form asp-action="Preview" method="post">
+        <div class="row">
+            <div class="col-md-8">
+                <p><strong>@Model.FormattedDate</strong></p>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>天氣：</label>
+                    <select asp-for="Weather" class="form-control">
+                        <option value="晴天">晴天</option>
+                        <option value="陰天">陰天</option>
+                        <option value="陰雨">陰雨</option>
+                        <option value="雨天">雨天</option>
                     </select>
-                </td>
-            </tr>
-        </table>
-    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="col-md-12 mt-3">
-		<p><b>一、營運重要事件摘錄</b></p>
-        <form asp-action="ExportToWord" method="post">
+        <div class="col-md-12 mt-3">
+		    <p><b>一、營運重要事件摘錄</b></p>
+        
             <!-- 事件群組容器 -->
             <div id="eventGroups">
                 <div class="event-group mb-4 border p-3 rounded">
@@ -91,30 +88,7 @@
                 <input asp-for="MainController" class="form-control" />
             </div>
 
-			<div>
-				<p><b>二、行車延誤事件統計</b></p>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-				        <label>（一）延誤5分鐘以上事件</label>
-						<input asp-for="TrainDelay5" class="form-control" required />
-                    </div>
-					<div class="col-md-4">
-						<label>（二）延誤1分30秒～5分鐘事件</label>
-						<input asp-for="TrainDelay130" class="form-control" required />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label>（三）延誤5分鐘以上不可抗力歸責事件</label>
-                        <input asp-for="TrainDelay5NBlameworthy" class="form-control" required />
-					</div>
-					<div class="col-md-4">
-						<label>（四）延誤1分30秒～5分鐘不可抗力歸責事件</label>
-						<input asp-for="TrainDelay130NBlameworthy" class="form-control" required />
-					</div>
-				</div>
-			</div>
-
+        </div>
             <div>
 				<p><b>三、急待解決事項</b></p>
                 <input asp-for="Pending" class="form-control"/>
@@ -149,62 +123,63 @@
                             </div>
                         </div>
 
-                        <!-- 右邊：(二) 尖峰加班車使用列車數 -->
+                        <!-- 擷取資料庫列車運轉記錄帶入 -->
                         <div class="col-md-6">
                             <p>（二）尖峰加班車使用列車數</p>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">上午尖峰常態加班車數</label>
-                                    <input asp-for="RegularMorningOvertimeWork" class="form-control" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">下午尖峰常態加班車數</label>
-                                    <input asp-for="RegularAfternoonOvertimeWork" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">上午尖峰臨時加班車數</label>
-                                    <input asp-for="TemporaryMorningOvertimeWork" class="form-control" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">下午離峰臨時加班車數</label>
-                                    <input asp-for="TemporaryAfternoonOvertimeWork" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
+                        @*     <div class="row mb-3"> *@
+                        @*         <div class="col-md-6"> *@
+                        @*             <label class="form-label">上午尖峰常態加班車數</label> *@
+                        @*             <input asp-for="RegularMorningOvertimeWork" class="form-control" /> *@
+                        @*         </div> *@
+                        @*         <div class="col-md-6"> *@
+                        @*             <label class="form-label">下午尖峰常態加班車數</label> *@
+                        @*             <input asp-for="RegularAfternoonOvertimeWork" class="form-control" /> *@
+                        @*         </div> *@
+                        @*     </div> *@
+                        @*     <div class="row mb-3"> *@
+                        @*         <div class="col-md-6"> *@
+                        @*             <label class="form-label">上午尖峰臨時加班車數</label> *@
+                        @*             <input asp-for="TemporaryMorningOvertimeWork" class="form-control" /> *@
+                        @*         </div> *@
+                        @*         <div class="col-md-6"> *@
+                        @*             <label class="form-label">下午離峰臨時加班車數</label> *@
+                        @*             <input asp-for="TemporaryAfternoonOvertimeWork" class="form-control" /> *@
+                        @*         </div> *@
+                        @*     </div> *@
+                        @* </div> *@
                     </div>
                 </div>
 
+                <!--龜兔表-->
                 <div>
 					<p>（三）可用列車數</p>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label>上午尖峰實際可用VAL對車數</label>
-					        <input asp-for="AvailableMorningPeak" class="form-control" />
-                        </div>
-						<div class="col-md-4">
-                            <label>下午尖峰實際可用VAL對車數</label>
-                            <input asp-for="AvailableAfternoonPeak" class="form-control" />
-					    </div>
-						<div class="col-md-4">
-							<label>離峰實際可用VAL對車數</label>
-							<input asp-for="AvailableOffPeak" class="form-control" />
-						</div>
-					</div>
-					<div class="row mb-3">
-                        <div class="col-md-4">
-                            <label>上午尖峰實際可用BT對車數</label>
-					        <input asp-for="AvailableMorningPeakBT" class="form-control" />
-						</div>
-                        <div class="col-md-4">
-							<label>下午尖峰實際可用BT對車數</label>
-							<input asp-for="AvailableAfternoonPeakBT" class="form-control" />
-                        </div>
-						<div class="col-md-4">
-						    <label>離峰可用BT對車數</label>
-						    <input asp-for="AvailableOffPeakBT" class="form-control" />
-                        </div>
+     @*                <div class="row mb-3"> *@
+     @*                    <div class="col-md-4"> *@
+     @*                        <label>上午尖峰實際可用VAL對車數</label> *@
+					@*         <input asp-for="AvailableMorningPeak" class="form-control" /> *@
+     @*                    </div> *@
+					@* 	<div class="col-md-4"> *@
+     @*                        <label>下午尖峰實際可用VAL對車數</label> *@
+     @*                        <input asp-for="AvailableAfternoonPeak" class="form-control" /> *@
+					@*     </div> *@
+					@* 	<div class="col-md-4"> *@
+					@* 		<label>離峰實際可用VAL對車數</label> *@
+					@* 		<input asp-for="AvailableOffPeak" class="form-control" /> *@
+					@* 	</div> *@
+					@* </div> *@
+					@* <div class="row mb-3"> *@
+     @*                    <div class="col-md-4"> *@
+     @*                        <label>上午尖峰實際可用BT對車數</label> *@
+					@*         <input asp-for="AvailableMorningPeakBT" class="form-control" /> *@
+					@* 	</div> *@
+     @*                    <div class="col-md-4"> *@
+					@* 		<label>下午尖峰實際可用BT對車數</label> *@
+					@* 		<input asp-for="AvailableAfternoonPeakBT" class="form-control" /> *@
+     @*                    </div> *@
+					@* 	<div class="col-md-4"> *@
+					@* 	    <label>離峰可用BT對車數</label> *@
+					@* 	    <input asp-for="AvailableOffPeakBT" class="form-control" /> *@
+     @*                    </div> *@
 					</div>
                     
 
@@ -212,61 +187,89 @@
             </div>
             <div>
                 <p><b>五、運行績效</b></p>
+                <!--計算-->
                 <div>
 					<p>（一）文湖線運行績效</p>
-					<div class="row mb-3">
-						<div class="col-md-4">
-							<label><b>不可控</b>5分以上延誤件數</label>
-							<input asp-for="UncontrollableDelay5min" class="form-control" />
-						</div>
-						<div class="col-md-4">
-							<label><b>A.可控</b>5分以上延誤件數</label>
-							<input asp-for="ControllableDelay5min" class="form-control" />
-						</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-4">
-							<label>B.當日萬列車公里數</label>
-							<input asp-for="TrainKmOnTheDay" class="form-control" />
-						</div>
-						<div class="col-md-4">
-							<label>C.累計萬列車公里數</label>
-							<input asp-for="TrainKmAccumulated" class="form-control" />
-						</div>
-					</div>
+					
+					@* <div class="row mb-3"> *@
+					@* 	<div class="col-md-4"> *@
+					@* 		<label>B.當日萬列車公里數</label> *@
+					@* 		<input asp-for="TrainKmOnTheDay" class="form-control" /> *@
+					@* 	</div> *@
+					@* 	<div class="col-md-4"> *@
+					@* 		<label>C.累計萬列車公里數</label> *@
+					@* 		<input asp-for="TrainKmAccumulated" class="form-control" /> *@
+					@* 	</div> *@
+					@* </div> *@
                 </div>
+
+                <!--計算-->
 				<div> 
                      <p>（二）班距</p> 
-					<div class="row mb-3"> 
-                        <div class="col-md-4">
-                            <label>上午方向一（六張犁-南港展覽館上行）尖峰最密班距</label>
-                            <input asp-for="MorningPeakDirection1" class="form-control" />
-					    </div> 
-					    <div class="col-md-4">
-                            <label>下午方向二尖峰最密班距</label>
-                            <input asp-for="AfternoonPeakDirection2" class="form-control" />
-                        </div>
-						<div class="col-md-4">
-                            <label>尖峰班距</label>
-                            <input asp-for="PeakDistance" class="form-control" />
-                        </div>
-                        <div class="col-md-4">
-                            <label>全日離峰班距</label>
-                            <input asp-for="OffPeakDistance" class="form-control" />
-                        </div>
-                   </div>
+					@* <div class="row mb-3">  *@
+     @*                    <div class="col-md-4"> *@
+     @*                        <label>上午方向一（六張犁-南港展覽館上行）尖峰最密班距</label> *@
+     @*                        <input asp-for="MorningPeakDirection1" class="form-control" /> *@
+					@*     </div>  *@
+					@*     <div class="col-md-4"> *@
+     @*                        <label>下午方向二尖峰最密班距</label> *@
+     @*                        <input asp-for="AfternoonPeakDirection2" class="form-control" /> *@
+     @*                    </div> *@
+					@* 	<div class="col-md-4"> *@
+     @*                        <label>尖峰班距</label> *@
+     @*                        <input asp-for="PeakDistance" class="form-control" /> *@
+     @*                    </div> *@
+     @*                    <div class="col-md-4"> *@
+     @*                        <label>全日離峰班距</label> *@
+     @*                        <input asp-for="OffPeakDistance" class="form-control" /> *@
+     @*                    </div> *@
+                   @* </div> *@
                 </div>
+                <!--計算-->
                 <div>
 					<p>（三）速率、延滯時間及準點率</p>
 					
                 </div>
+                <!--計算-->
                 <div>
                     <p>（四）發車次數</p>
 					<div class="row mb-3">
+                        <div class="col-md-4">
+                            <label>日期</label>
+                            <input asp-for="OvertimeDate" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>作業別</label>
+                            <select asp-for="OvertimeWorkType" class="form-control">
+                                <option value="1_加班車作業">1_加班車作業</option>
+                                <option value="2_延駛作業">2_延駛作業</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <label>常態/臨時</label>
+                            <select>
+                                <option>1_常態</option>
+                                <option>2_臨時</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>加班車作業線別</label>
+                            <select asp-for="OvertimeOperationLine">
+                                <option>文湖線</option>
+                            </select>
+
+                        </div>
 						<div class="col-md-4">
                             <label>加班車作業時段</label>
 							<input asp-for="OvertimeTrainWork" class="form-control" />
 						</div>
+                        <div class="col-md-4">
+                            <label>加班車作業行駛起訖區間</label>
+                            <select>
+                                <option>南港展覽館站-動物園站</option>
+                            </select>
+                        </div>
 						<div class="col-md-4">
                             <label>加班車作業站間數</label>
                             <input asp-for="OvertimeTrainStation" class="form-control" value="23" />
@@ -280,9 +283,10 @@
 							<input asp-for="OvertimeTrainDeparture" class="form-control" />
                         </div>
 
+                    </div>
+
+
                 </div>
-
-
             </div>
             <div>
                 <p><b>六、未載客列車里程數（公里）</b></p>
@@ -330,7 +334,8 @@
 						</tr>
                     </tbody>
                 </table>
-				<p>備註：本日總行車公里= {系統計算數值}（含轉換軌及折轉區里程）</p>
+                <!--系統計算-->
+                <p>備註：本日總行車公里= <input asp-for="TodayKmTotal" class="form-control" value="156888.3" />（含轉換軌及折轉區里程）</p>
             </div>
             <div>
 				<p><b>七、本日文湖線運量</b></p>
@@ -341,9 +346,9 @@
             </div>
 
 
-            <button type="submit" class="btn btn-success mt-3">匯出 Word</button>
-        </form>
-    </div>
+            <button type="submit" class="btn btn-success mt-3">預覽</button>
+       </form>
+</div>
 
     @section Scripts {
         <script>
