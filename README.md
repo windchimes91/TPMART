@@ -1,19 +1,36 @@
 # TPMART
 H.文湖線每日行車運轉狀況
 
-未完成
+WLineDailyOperationStatus=>Model
 
-需系統計算數據
+WLineDailyOperationStatusController=>Controller
 
-預覽畫面（Preview.cshtml）
+WLineDailyOperationStatus=>View
 
-匯出Word
 
-把系統日期改成N-1
+
+有用到RP_EventDetails =>(U5Controllable等)
+
+Preview.cshtml為預覽頁面
+
+
+
+未建立資料庫儲存數值
+
+未加上使用者輸入提示字元
+
+目前預覽表格皆已建置完成，差需要計算之數據，Word匯出可正常匯出但還不完整，Index僅留需要輸入的資料
+
+
+未完成部分：
+四、（二） | 四、（三）
+
+
+五、（一）=>8.6、8.10及C/A | 五、（二） | 五、（三） | 五、（四）
+
 
 日期選擇=>僅查看當時資料（不確定）
 
-我下課回家會再做修改，如果有修改甚麼在跟我說，感恩！
 
 ======================================================
 
