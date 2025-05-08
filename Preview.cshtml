@@ -1,43 +1,479 @@
 ﻿@model TPMRTweb.Models.WLineDailyOperationStatus
-
 @{
-    ViewData["Title"] = "文湖線每日行車運轉狀況 - 預覽";
+    ViewData["Title"] = "預覽文湖線每日行車運轉狀況";
 }
 
-<h2>文湖線每日行車運轉狀況</h2>
-
-<p><strong>日期：</strong>@DateTime.Now.ToString("yyyy/MM/dd")</p>
-<p><strong>主任控制員：</strong>@Model.MainController</p>
-
-<h3>一、營運重要事件摘錄</h3>
-@if (Model.EventGroups != null)
-{
-    foreach (var group in Model.EventGroups)
-    {
-        <p><strong>@group.Title</strong></p>
-        foreach (var entry in group.TimeEntries)
-        {
-            <p>時間：@entry.Time</p>
-            <p>內容：@entry.Content</p>
-        }
+<style>
+    .report-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
     }
-}
 
-<h3>二、行車延誤統計</h3>
-<ul>
-    <li>延誤5分鐘以上事件：@Model.TrainDelay5 件</li>
-    <li>延誤1分30秒～5分鐘事件：@Model.TrainDelay130 件</li>
-    <li>延誤5分鐘以上不可抗力事件：@Model.TrainDelay5NBlameworthy 件</li>
-    <li>延誤1分30秒～5分鐘不可抗力事件：@Model.TrainDelay130NBlameworthy 件</li>
-</ul>
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
 
-<h3>三、急待解決事項</h3>
-<p>@(string.IsNullOrEmpty(Model.Pending) ? "無" : Model.Pending)</p>
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
 
-<!-- 可加上更多資料區塊 -->
+    .red-text {
+        color: red;
+        font-weight: bold;
+    }
+
+    table.table-bordered td, table.table-bordered th {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .underline {
+        text-decoration: underline;
+    }
+</style>
 
 <form asp-action="ExportToWord" method="post">
-    <input type="hidden" asp-for="MainController" />
-    <!-- 對 EventGroups、TrainDelay5 等需要用 hidden field 或 JavaScript JSON 傳遞 -->
-    <button type="submit" class="btn btn-primary">下載 Word</button>
+    <div class="report-title">文湖線每日行車運轉狀況</div>
+
+    <div class="report-header">
+        <div><strong>日期：</strong>@Model.FormattedDate</div>
+        <div><strong>天氣：</strong>@Model.Weather</div>
+    </div>
+
+    <div class="section-title">一、營運重要事件摘錄</div>
+    @if (Model.EventGroups != null && Model.EventGroups.Any())
+    {
+        <ul>
+            @{
+                int index = 1;
+            }
+            @foreach (var group in Model.EventGroups)
+            {
+                <li>
+                    <strong>@($"{index}. 【{group.Title}】")</strong>
+                    <ul>
+                        @foreach (var entry in group.TimeEntries)
+                        {
+                            <li>@entry.Time　內容：@entry.Content</li>
+                        }
+                    </ul>
+                </li>
+                index++;
+            }
+        </ul>
+    }
+    else
+    {
+        <p>無重要事件摘錄。</p>
+    }
+    <div class="text-end me-3">
+        <p>（主任控制員：@Model.MainController）</p>
+    </div>
+
+    <div class="section-title">二、行車延誤事件統計</div>
+    <p>（一）延誤 5 分鐘以上事件：<span class="red-text">@Model.U5ControllableCountToday</span> 件。</p>
+    <p>（二）延誤 1 分 30 秒～5 分鐘事件：<span class="red-text">@Model.D5ControllableCountToday</span> 件。</p>
+    <p>（三）延誤 5 分以上不可抗力歸責事件：<span class="red-text">@Model.U5UncontrollableCountToday</span> 件。</p>
+    <p>（四）延誤 1 分 30 秒～5 分不可抗力歸責事件：<span class="red-text">@Model.D5UncontrollableCountToday</span> 件。</p>
+
+
+    <div class="section-title">三、急待解決事項</div>
+    @if (Model.Pending != null && Model.Pending.Any())
+	{
+		<p class="red-text">@Model.Pending</p>
+	}
+	else
+	{
+        <p class="red-text">無</p>
+	})
+    
+
+    <div class="section-title">四、電聯車使用概況</div>
+    <p>（一）各時段使用列車數</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>時段</th>
+                <th>使用列車數</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>上午尖峰 / 離峰</td>
+                <td>@Model.MaxMorningPeakPeriod / @Model.MaxMorningOffPeakPeriod</td>
+            </tr>
+            <tr>
+                <td>下午尖峰 / 離峰</td>
+                <td>@Model.MaxAfternoonPeakPeriod / @Model.MaxAfternoonOffPeakPeriod</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>（二）尖峰加班車使用列車數</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>時段</th>
+                <th>常態</th>
+                <th>臨時</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>上午</td>
+                <td>@Model.AvailableMorningPeak</td>
+                <td>@Model.AvailableMorningPeakBT</td>
+            </tr>
+            <tr>
+                <td>下午</td>
+                <td>@Model.AvailableAfternoonPeak</td>
+                <td>@Model.AvailableAfternoonPeakBT</td>
+            </tr>
+            <tr>
+                <td>離峰</td>
+                <td>@Model.AvailableOffPeak</td>
+                <td>@Model.AvailableOffPeakBT</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>（三）可用列車數</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th rowspan="2">車型</th>
+                <th colspan="3">平常日</th>
+                <th colspan="2">例假日</th>
+            </tr>
+            <tr>
+                <th>上午尖峰</th>
+                <th>下午尖峰</th>
+                <th>離峰</th>
+				<th>尖峰</th>
+				<th>離峰</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>VAL256</td>
+                <td>-</td>
+                <td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+            </tr>
+			<tr>
+				<td>BT370</td>
+				<td>-</td>
+				<td>-</td>
+                <td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td>合計</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+                <td>-</td>
+                <td>-</td>
+			</tr>
+        </tbody>
+    </table>
+
+
+    <div class="section-title">五、運行績效</div>
+    <p>（一）文湖線運行績效</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th rowspan="2">線別</th>
+                <th colspan="2">5分以上<br />延誤件數（件）</th>
+                <th colspan="2">萬列車公里數</th>
+				<th rowspan="2">各線運行績效(C/A)</th>
+            </tr>
+            <tr>
+                <th>不可控</th>
+                <th>A.可控</th>
+                <th>B.當日</th>
+                <th>C.累計</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>文湖</td>
+                <td>@Model.U5UncontrollableCountYear</td>
+                <td>@Model.U5ControllableCountYear</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+	<p>（二）班距</p>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th colspan="2">區段</th>
+				<th>公里</th>
+				<th colspan="2">尖峰/與上週同日偏差</th>
+                <th colspan="2">離峰/與上週同日偏差</th>
+            </tr>
+        </thead>
+		<tbody>
+			<tr>
+				<td rowspan="4">主線</td>
+				<td>南港展覽館站-動物園站</td>
+				<td>25.5</td>
+				<td>-</td>
+				<td>(-00:01)</td>
+				<td>-</td>
+				<td>(-00:11)</td>
+			</tr>
+			<tr>
+                <td colspan="2">六張犁-南港展覽館上行<br /><span class="text-end me-3">早上最密</span></td>
+				<td>-</td>
+                <td>(00:00)</td>
+				<td>-</td>
+				<td>-</td>
+            </tr>
+			<tr>
+				<td colspan="2">港墘-動物園下行<br /><span class="text-end me-3">下午最密</span></td>
+				<td>-</td>
+				<td>(00:00)</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+            <tr>
+                <td colspan="2">系統目標值</td>
+                <td colspan="2">2至4分鐘</td>
+                <td colspan="2">4至10分鐘</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>（三）速率、延滯時間及準點率</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2">營運模式</th>
+                <th>公里</th>
+                <th colspan="3">速率/與上週同日偏差<br/>(KPH)</th>
+                <th>延滯時間<br/>(秒/車)</th>
+				<th>準點率<br />(%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2">主線</td>
+                <td>南港展覽館站-動物園站</td>
+                <td>25.5</td>
+                <td>-</td>
+                <td>64</td>
+                <td>(-0.02)</td>
+                <td>-</td>
+				<td>-</td>
+            </tr>
+            <tr>
+                <td colspan="2">系統目標值</td>
+                <td colspan="3">高於30</td>
+                <td>低於2</td>
+                <td>高於99</td>
+            </tr>
+        </tbody>
+    </table>
+	<p>（四）發車次數</p>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+                <th colspan="3"></th>
+				<th colspan="3">行駛區間</th>
+				<th colspan="2">公里</th>
+				<th>發車次數</th>
+            </tr>
+        </thead>
+        <tbody>
+			<tr>
+				<td rowspan="4" colspan="3">主線<br />表定區間</td>
+				<td colspan="3">南港展覽館站-動物園站</td>
+				<td colspan="2">-</td>
+				<td>-</td>
+			</tr>
+			<tr>
+                <td colspan="3">非端點站首班車</td>
+                <td colspan="2">-</td>
+				<td>-</td>
+			</tr>
+			<tr>
+                <td colspan="3">轉運車</td>
+                <td colspan="2">-</td>
+				<td>-</td>
+			</tr>
+            <tr>
+                <td colspan="3">轉換軌(不含異常換車)</td>
+                <td colspan="2">-</td>
+				<td>0</td>
+			</tr>
+            <!--這裡可能會依資料多寡變化-->
+            <tr>
+				<td rowspan="11">加班車及延駛作業</td>
+				<td rowspan="5">加班車作業</td>
+				<td></td>
+				<td>線別</td>
+				<td>時段</td>
+                <td>行駛起訖區間</td>
+                <td>站間數</td>
+				<td>公里</td>
+				<td>發車次數</td>
+            </tr>
+			<tr>
+				<td rowspan="2">常態</td>
+                <td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+                <td>-</td>
+                <td>-</td>
+			</tr>
+			<tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+				<td rowspan="2">臨時</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+				<td colspan="7">總合計</td>
+				<td>-</td>
+            </tr>
+            <tr>
+                <td rowspan="5">延駛作業</td>
+                <td></td>
+                <td>線別</td>
+                <td>時段</td>
+                <td>行駛起訖區間</td>
+                <td>發車次數</td>
+            </tr>
+            <tr>
+                <td rowspan="2">常態</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td rowspan="2">臨時</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="section-title">六、未載客列車里程數(公里)</div>
+    <table class="table table-bordered">
+        <thead>
+            <tr align="center">
+                <th colspan="2">因素\路線</th>
+                <th align="center">文湖線</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="6">表訂</td>
+                <td>晨間佈車</td>
+                <td>@Model.MorningTrainKm</td>
+            </tr>
+            <tr>
+                <td>尖離峰收發車</td>
+                <td>@Model.PeakOffPeakTrainKm</td>
+            </tr>
+            <tr>
+                <td>夜間收車</td>
+                <td>@Model.NightTrainKm</td>
+            </tr>
+            <tr>
+                <td>加班車</td>
+                <td>@Model.TableOrderOvertimeTrainKm</td>
+            </tr>
+            <tr>
+                <td>轉運列車</td>
+                <td>@Model.TransferTrainKm</td>
+            </tr>
+            <tr>
+                <td>維修調度需求</td>
+                <td>@Model.TableOrderMaintenanceTrainKm</td>
+            </tr>
+            <tr>
+                <td rowspan="4" align="center">臨時</td>
+                <td>加班車</td>
+                <td>@Model.TemporaryOvertimeTrainKm</td>
+            </tr>
+            <tr>
+                <td>維修調度需求</td>
+                <td>@Model.TemporaryMaintenanceTrainKm</td>
+            </tr>
+            <tr>
+                <td>異常事件調度</td>
+                <td>@Model.ExceptionEventKm</td>
+            </tr>
+            <tr>
+                <td>其他（含測試車）</td>
+                <td>@Model.OtherUnloadedKm</td>
+            </tr>
+            <tr>
+                <td colspan="2">合計</td>
+                <td id="TotalKm"></td>
+            </tr>
+        </tbody>
+    </table>
+    <!--系統計算-->
+    <p>備註：本日總行車公里= @Model.TodayKmTotal （含轉換軌及折轉區里程）</p>
+    <p><b>七、本日文湖線運量</b></p>
+    <div class="d-flex align-items-center mb-3">
+        <label for="TodayTrainTotal" class="me-2 mb-0">文湖線：@Model.TodayTrainTotal</label>
+    </div>
+    <button type="submit" class="btn btn-success mt-3">匯出 Word</button>
 </form>

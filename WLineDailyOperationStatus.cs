@@ -2,16 +2,20 @@
 {
     public class WLineDailyOperationStatus
     {
+        public string FormattedDate { get; set; }
+        public string Weather { get; set; }
+
         //一、營運重要事件摘錄
         public List<EventGroup> EventGroups { get; set; } = new List<EventGroup>();
         public string MainController { get; set; }
 
 
         //二、行車延誤事件統計
-        public string TrainDelay5 { get; set; }
-        public string TrainDelay130 { get; set; }
-        public string TrainDelay5NBlameworthy { get; set; }
-        public string TrainDelay130NBlameworthy { get; set; }
+        public int U5ControllableCountToday { get; set; }
+        public int U5UncontrollableCountToday { get; set; }
+        public int D5ControllableCountToday { get; set; }
+        public int D5UncontrollableCountToday { get; set; }
+
 
 
         //三、急待解決事項
@@ -36,14 +40,21 @@
 
 
         //五、運行績效
-        public string UncontrollableDelay5min { get; set; }
-        public string ControllableDelay5min { get; set; }
+        public int U5ControllableCountYear { get; set; }
+        public int U5UncontrollableCountYear { get; set; }
+        public string U5Uncontrollable { get; set; }
+        public string U5Controllable { get; set; }
         public string TrainKmOnTheDay { get; set; }
         public string TrainKmAccumulated { get; set; }
         public string MorningPeakDirection1 { get; set; }
         public string AfternoonPeakDirection2 { get; set; }
         public string PeakDistance { get; set; }
         public string OffPeakDistance { get; set; }
+        public string OvertimeOperationLine { get; set; }
+
+        //（四）發車次數
+        public string OvertimeDate { get; set; }
+        public string OvertimeWorkType { get; set; }
         public string OvertimeTrainWork { get; set; }
         public string OvertimeTrainStation { get; set; }
         public string OvertimeTrainKm { get; set; }
@@ -65,7 +76,9 @@
         public string TemporaryMaintenanceTrainKm { get; set; }
         public string ExceptionEventKm { get; set; }
         public string OtherUnloadedKm { get; set; }
+        public string TodayKmTotal { get; set; }
         public string TotalUnloadedKm { get; set; }
+
 
         //七、本日文湖線運量
         public string TodayTrainTotal { get; set; }

@@ -7,20 +7,193 @@ using System;
 using TPMRTweb.Models;
 using System.Globalization;
 using DocumentFormat.OpenXml;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using DocumentFormat.OpenXml.EMMA;
 
 
 namespace TPMRTweb.Controllers
 {
     public class WLineDailyOperationStatusController : Controller
     {
+        private readonly TPMRTContext _context;
+
+        public WLineDailyOperationStatusController(TPMRTContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            return View();
+            var now = DateTime.Now;
+            var yesterday = now.AddDays(-1);
+            var taiwanCulture = new CultureInfo("zh-TW");
+            var rocYear = yesterday.Year - 1911;
+            var dayOfWeek = yesterday.ToString("dddd", taiwanCulture);
+            var dateview = $"民國 {rocYear} 年 {yesterday.Month} 月 {yesterday.Day} 日 {dayOfWeek}";
+
+            var model = new WLineDailyOperationStatus
+            {
+                FormattedDate = dateview,
+            };
+
+            return View(model); // 確保 model 不為 null
         }
+
+
         public IActionResult Preview(WLineDailyOperationStatus model)
         {
-            return View("Preview", model); // 將資料傳到預覽頁面
+            var now = DateTime.Now;
+            var yesterday = now.AddDays(-1);
+            var taiwanCulture = new CultureInfo("zh-TW");
+            var rocYear = yesterday.Year - 1911;
+            var dayOfWeek = yesterday.ToString("dddd", taiwanCulture);
+
+            var dateview = $"民國 {rocYear} 年 {yesterday.Month} 月 {yesterday.Day} 日 {dayOfWeek}";
+
+            //二、行車延誤事件統計
+            var startOfYesterday = yesterday.Date;
+            var endOfYesterday = yesterday.Date.AddDays(1).AddTicks(-1);
+
+            int U5Controllablecount = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value >= startOfYesterday && e.Date.Value <= endOfYesterday && e.U5controllable == true)
+                .Count();
+            int U5uncontrollablecount = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value >= startOfYesterday && e.Date.Value <= endOfYesterday && e.U5uncontrollable == true)
+                .Count();
+            int D5controllablecount = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value >= startOfYesterday && e.Date.Value <= endOfYesterday && e.D5controllable == true)
+                .Count();
+            int D5uncontrollablecount = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value >= startOfYesterday && e.Date.Value <= endOfYesterday && e.D5uncontrollable == true)
+                .Count();
+
+            //五、運行績效
+            int targetYear = yesterday.Year;
+
+            // 調試資料
+            var allRecordsForYear = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value.Year == targetYear)
+                .ToList();
+
+
+            if (allRecordsForYear.Any())
+            {
+                var sampleRecords = allRecordsForYear.Take(3);
+                foreach (var record in sampleRecords)
+                {
+                    Console.WriteLine($"Debug - Sample record: Date={record.Date}, U5controllable={record.U5controllable}");
+                }
+            }
+
+            // 嘗試使用更寬鬆的條件
+            int U5ControllableYearcount = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value.Year == targetYear)
+                .Count(e => e.U5controllable == true);
+
+            int U5UncontrollableYearcount = _context.RpEventDetails
+                .Where(e => e.Date.HasValue && e.Date.Value.Year == targetYear)
+                .Count(e => e.U5uncontrollable == true);
+
+
+            // 嘗試使用原生SQL
+            int U5sqlCount;
+            int U5UsqlCount;
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = $"SELECT COUNT(*) FROM RP_EventDetails WHERE YEAR(Date) = {targetYear} AND U5controllable = 1";
+                    var U5result = command.ExecuteScalar();
+                    U5sqlCount = U5result != null ? Convert.ToInt32(U5result) : 0;
+
+                    command.CommandText = $"SELECT COUNT(*) FROM RP_EventDetails WHERE YEAR(Date) = {targetYear} AND U5Uncontrollable = 1";
+                    var U5Uresult = command.ExecuteScalar();
+                    U5UsqlCount = U5Uresult != null ? Convert.ToInt32(U5Uresult) : 0;
+
+                }
+            }
+
+            var savedModel = model;
+
+            var viewModel = new WLineDailyOperationStatus
+            {
+                // 來自資料庫查詢的數據
+                U5ControllableCountToday = U5Controllablecount,
+                U5UncontrollableCountToday = U5uncontrollablecount,
+                D5ControllableCountToday = D5controllablecount,
+                D5UncontrollableCountToday = D5uncontrollablecount,
+                U5ControllableCountYear = U5sqlCount,
+                U5UncontrollableCountYear = U5UsqlCount,
+                FormattedDate = dateview,
+
+                // 保留從 Index 表單傳過來的數據
+                Weather = savedModel.Weather,
+                MainController = savedModel.MainController,
+                EventGroups = savedModel.EventGroups,
+                Pending = savedModel.Pending,
+
+                // 電聯車使用概況
+                MaxMorningPeakPeriod = savedModel.MaxMorningPeakPeriod,
+                MaxAfternoonPeakPeriod = savedModel.MaxAfternoonPeakPeriod,
+                MaxMorningOffPeakPeriod = savedModel.MaxMorningOffPeakPeriod,
+                MaxAfternoonOffPeakPeriod = savedModel.MaxAfternoonOffPeakPeriod,
+                RegularMorningOvertimeWork = savedModel.RegularMorningOvertimeWork,
+                RegularAfternoonOvertimeWork = savedModel.RegularAfternoonOvertimeWork,
+                TemporaryMorningOvertimeWork = savedModel.TemporaryMorningOvertimeWork,
+                TemporaryAfternoonOvertimeWork = savedModel.TemporaryAfternoonOvertimeWork,
+                AvailableMorningPeak = savedModel.AvailableMorningPeak,
+                AvailableAfternoonPeak = savedModel.AvailableAfternoonPeak,
+                AvailableOffPeak = savedModel.AvailableOffPeak,
+                AvailableMorningPeakBT = savedModel.AvailableMorningPeakBT,
+                AvailableAfternoonPeakBT = savedModel.AvailableAfternoonPeakBT,
+                AvailableOffPeakBT = savedModel.AvailableOffPeakBT,
+
+                // 運行績效
+                U5Uncontrollable = savedModel.U5Uncontrollable,
+                U5Controllable = savedModel.U5Controllable,
+                TrainKmOnTheDay = savedModel.TrainKmOnTheDay,
+                TrainKmAccumulated = savedModel.TrainKmAccumulated,
+                MorningPeakDirection1 = savedModel.MorningPeakDirection1,
+                AfternoonPeakDirection2 = savedModel.AfternoonPeakDirection2,
+                PeakDistance = savedModel.PeakDistance,
+                OffPeakDistance = savedModel.OffPeakDistance,
+
+                // 發車次數
+                OvertimeDate = savedModel.OvertimeDate,
+                OvertimeWorkType = savedModel.OvertimeWorkType,
+                OvertimeOperationLine = savedModel.OvertimeOperationLine,
+                OvertimeTrainWork = savedModel.OvertimeTrainWork,
+                OvertimeTrainStation = savedModel.OvertimeTrainStation,
+                OvertimeTrainKm = savedModel.OvertimeTrainKm,
+                OvertimeTrainDeparture = savedModel.OvertimeTrainDeparture,
+
+                // 未載客列車里程數
+                MorningTrainKm = savedModel.MorningTrainKm,
+                PeakOffPeakTrainKm = savedModel.PeakOffPeakTrainKm,
+                NightTrainKm = savedModel.NightTrainKm,
+                TableOrderOvertimeTrainKm = savedModel.TableOrderOvertimeTrainKm,
+                TransferTrainKm = savedModel.TransferTrainKm,
+                TableOrderMaintenanceTrainKm = savedModel.TableOrderMaintenanceTrainKm,
+                TemporaryOvertimeTrainKm = savedModel.TemporaryOvertimeTrainKm,
+                TemporaryMaintenanceTrainKm = savedModel.TemporaryMaintenanceTrainKm,
+                ExceptionEventKm = savedModel.ExceptionEventKm,
+                OtherUnloadedKm = savedModel.OtherUnloadedKm,
+                TodayKmTotal = savedModel.TodayKmTotal,
+                TotalUnloadedKm = savedModel.TotalUnloadedKm,
+
+                // 本日文湖線運量
+                TodayTrainTotal = savedModel.TodayTrainTotal
+            };
+
+            //_context.WLineDailyOperationStatus.Add(viewModel);
+            //_context.SaveChanges();
+
+            return View(viewModel);
         }
+
+
         public IActionResult ExportToWord(WLineDailyOperationStatus model)
         {
             using (var ms = new MemoryStream())
@@ -77,10 +250,10 @@ namespace TPMRTweb.Controllers
 
 
 
-                    body.AppendChild(new Paragraph(new Run(new Text($"（一）延誤5分鐘以上事件{model.TrainDelay5}件"))));
-                    body.AppendChild(new Paragraph(new Run(new Text($"（二）延誤1分30秒～5分鐘事件{model.TrainDelay130}件"))));
-                    body.AppendChild(new Paragraph(new Run(new Text($"（三）延誤5分鐘以上不可抗力歸責事件{model.TrainDelay5NBlameworthy}件"))));
-                    body.AppendChild(new Paragraph(new Run(new Text($"（四）延誤1分30秒～5分鐘不可抗力歸責事件{model.TrainDelay130NBlameworthy}件"))));
+                    body.AppendChild(new Paragraph(new Run(new Text($"（一）延誤5分鐘以上事件{model.U5ControllableCountToday}件"))));
+                    body.AppendChild(new Paragraph(new Run(new Text($"（二）延誤1分30秒～5分鐘事件{model.D5ControllableCountToday}件"))));
+                    body.AppendChild(new Paragraph(new Run(new Text($"（三）延誤5分鐘以上不可抗力歸責事件{model.U5UncontrollableCountToday}件"))));
+                    body.AppendChild(new Paragraph(new Run(new Text($"（四）延誤1分30秒～5分鐘不可抗力歸責事件{model.D5UncontrollableCountToday}件"))));
                     
 
                     body.AppendChild(new Paragraph(new Run(new Text("三、急待解決事項"))));
