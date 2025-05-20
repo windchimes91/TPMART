@@ -30,8 +30,8 @@
         </div>
 
         <div class="col-md-12 mt-3">
-		    <p><b>一、營運重要事件摘錄</b></p>
-        
+            <p><b>一、營運重要事件摘錄</b></p>
+
             <!-- 事件群組容器 -->
             <div id="eventGroups">
                 <div class="event-group mb-4 border p-3 rounded">
@@ -90,12 +90,12 @@
 
         </div>
             <div>
-				<p><b>三、急待解決事項</b></p>
+                <p><b>三、急待解決事項</b></p>
                 <input asp-for="Pending" class="form-control"/>
             </div>
 
-			<div>
-				<p><b>四、電聯車使用概況</b></p>
+            <div>
+                <p><b>四、電聯車使用概況</b></p>
                 <div class="container">
                     <div class="row">
                         <!-- 左邊：(一) 各時段使用列車數 -->
@@ -152,36 +152,36 @@
 
                 <!--龜兔表-->
                 <div>
-					<p>（三）可用列車數</p>
-     @*                <div class="row mb-3"> *@
-     @*                    <div class="col-md-4"> *@
-     @*                        <label>上午尖峰實際可用VAL對車數</label> *@
-					@*         <input asp-for="AvailableMorningPeak" class="form-control" /> *@
-     @*                    </div> *@
-					@* 	<div class="col-md-4"> *@
-     @*                        <label>下午尖峰實際可用VAL對車數</label> *@
-     @*                        <input asp-for="AvailableAfternoonPeak" class="form-control" /> *@
-					@*     </div> *@
-					@* 	<div class="col-md-4"> *@
-					@* 		<label>離峰實際可用VAL對車數</label> *@
-					@* 		<input asp-for="AvailableOffPeak" class="form-control" /> *@
-					@* 	</div> *@
-					@* </div> *@
-					@* <div class="row mb-3"> *@
-     @*                    <div class="col-md-4"> *@
-     @*                        <label>上午尖峰實際可用BT對車數</label> *@
-					@*         <input asp-for="AvailableMorningPeakBT" class="form-control" /> *@
-					@* 	</div> *@
-     @*                    <div class="col-md-4"> *@
-					@* 		<label>下午尖峰實際可用BT對車數</label> *@
-					@* 		<input asp-for="AvailableAfternoonPeakBT" class="form-control" /> *@
-     @*                    </div> *@
-					@* 	<div class="col-md-4"> *@
-					@* 	    <label>離峰可用BT對車數</label> *@
-					@* 	    <input asp-for="AvailableOffPeakBT" class="form-control" /> *@
-     @*                    </div> *@
-					</div>
-                    
+                    <p>（三）可用列車數</p>
+                    @*                <div class="row mb-3"> *@
+                    @*                    <div class="col-md-4"> *@
+                    @*                        <label>上午尖峰實際可用VAL對車數</label> *@
+                    @*         <input asp-for="AvailableMorningPeak" class="form-control" /> *@
+                    @*                    </div> *@
+                    @* 	<div class="col-md-4"> *@
+                    @*                        <label>下午尖峰實際可用VAL對車數</label> *@
+                    @*                        <input asp-for="AvailableAfternoonPeak" class="form-control" /> *@
+                    @*     </div> *@
+                    @* 	<div class="col-md-4"> *@
+                    @* 		<label>離峰實際可用VAL對車數</label> *@
+                    @* 		<input asp-for="AvailableOffPeak" class="form-control" /> *@
+                    @* 	</div> *@
+                    @* </div> *@
+                    @* <div class="row mb-3"> *@
+                    @*                    <div class="col-md-4"> *@
+                    @*                        <label>上午尖峰實際可用BT對車數</label> *@
+                    @*         <input asp-for="AvailableMorningPeakBT" class="form-control" /> *@
+                    @* 	</div> *@
+                    @*                    <div class="col-md-4"> *@
+                    @* 		<label>下午尖峰實際可用BT對車數</label> *@
+                    @* 		<input asp-for="AvailableAfternoonPeakBT" class="form-control" /> *@
+                    @*                    </div> *@
+                    @* 	<div class="col-md-4"> *@
+                    @* 	    <label>離峰可用BT對車數</label> *@
+                    @* 	    <input asp-for="AvailableOffPeakBT" class="form-control" /> *@
+                    @*                    </div> *@
+                    </div>
+
 
                 </div>
             </div>
@@ -189,101 +189,101 @@
                 <p><b>五、運行績效</b></p>
                 <!--計算-->
                 <div>
-					<p>（一）文湖線運行績效</p>
-					
-					@* <div class="row mb-3"> *@
-					@* 	<div class="col-md-4"> *@
-					@* 		<label>B.當日萬列車公里數</label> *@
-					@* 		<input asp-for="TrainKmOnTheDay" class="form-control" /> *@
-					@* 	</div> *@
-					@* 	<div class="col-md-4"> *@
-					@* 		<label>C.累計萬列車公里數</label> *@
-					@* 		<input asp-for="TrainKmAccumulated" class="form-control" /> *@
-					@* 	</div> *@
-					@* </div> *@
+                    <p>（一）文湖線運行績效</p>
+
+                @* <div class="row mb-3"> *@
+                @* 	<div class="col-md-4"> *@
+                @* 		<label>B.當日萬列車公里數</label> *@
+                @* 		<input asp-for="TrainKmOnTheDay" class="form-control" /> *@
+                @* 	</div> *@
+                @* 	<div class="col-md-4"> *@
+                @* 		<label>C.累計萬列車公里數</label> *@
+                @* 		<input asp-for="TrainKmAccumulated" class="form-control" /> *@
+                @* 	</div> *@
+                @* </div> *@
                 </div>
 
                 <!--計算-->
-				<div> 
+                <div> 
                      <p>（二）班距</p> 
-					@* <div class="row mb-3">  *@
-     @*                    <div class="col-md-4"> *@
-     @*                        <label>上午方向一（六張犁-南港展覽館上行）尖峰最密班距</label> *@
-     @*                        <input asp-for="MorningPeakDirection1" class="form-control" /> *@
-					@*     </div>  *@
-					@*     <div class="col-md-4"> *@
-     @*                        <label>下午方向二尖峰最密班距</label> *@
-     @*                        <input asp-for="AfternoonPeakDirection2" class="form-control" /> *@
-     @*                    </div> *@
-					@* 	<div class="col-md-4"> *@
-     @*                        <label>尖峰班距</label> *@
-     @*                        <input asp-for="PeakDistance" class="form-control" /> *@
-     @*                    </div> *@
-     @*                    <div class="col-md-4"> *@
-     @*                        <label>全日離峰班距</label> *@
-     @*                        <input asp-for="OffPeakDistance" class="form-control" /> *@
-     @*                    </div> *@
-                   @* </div> *@
+                @* <div class="row mb-3">  *@
+                @*                    <div class="col-md-4"> *@
+                @*                        <label>上午方向一（六張犁-南港展覽館上行）尖峰最密班距</label> *@
+                @*                        <input asp-for="MorningPeakDirection1" class="form-control" /> *@
+                @*     </div>  *@
+                @*     <div class="col-md-4"> *@
+                @*                        <label>下午方向二尖峰最密班距</label> *@
+                @*                        <input asp-for="AfternoonPeakDirection2" class="form-control" /> *@
+                @*                    </div> *@
+                @* 	<div class="col-md-4"> *@
+                @*                        <label>尖峰班距</label> *@
+                @*                        <input asp-for="PeakDistance" class="form-control" /> *@
+                @*                    </div> *@
+                @*                    <div class="col-md-4"> *@
+                @*                        <label>全日離峰班距</label> *@
+                @*                        <input asp-for="OffPeakDistance" class="form-control" /> *@
+                @*                    </div> *@
+                @* </div> *@
                 </div>
                 <!--計算-->
                 <div>
-					<p>（三）速率、延滯時間及準點率</p>
-					
+                    <p>（三）速率、延滯時間及準點率</p>
+
                 </div>
                 <!--計算-->
                 <div>
                     <p>（四）發車次數</p>
-					<div class="row mb-3">
-                        <div class="col-md-4">
-                            <label>日期</label>
-                            <input asp-for="OvertimeDate" class="form-control" />
-                        </div>
-                        <div class="col-md-4">
-                            <label>作業別</label>
-                            <select asp-for="OvertimeWorkType" class="form-control">
-                                <option value="1_加班車作業">1_加班車作業</option>
-                                <option value="2_延駛作業">2_延駛作業</option>
-                            </select>
+                    @* <div class="row mb-3"> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>日期</label> *@
+                    @*         <input asp-for="OvertimeDate" class="form-control" /> *@
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>作業別</label> *@
+                    @*         <select asp-for="OvertimeWorkType" class="form-control"> *@
+                    @*             <option value="1_加班車作業">1_加班車作業</option> *@
+                    @*             <option value="2_延駛作業">2_延駛作業</option> *@
+                    @*         </select> *@
 
-                        </div>
-                        <div class="col-md-4">
-                            <label>常態/臨時</label>
-                            <select>
-                                <option>1_常態</option>
-                                <option>2_臨時</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label>加班車作業線別</label>
-                            <select asp-for="OvertimeOperationLine">
-                                <option>文湖線</option>
-                            </select>
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>常態/臨時</label> *@
+                    @*         <select> *@
+                    @*             <option>1_常態</option> *@
+                    @*             <option>2_臨時</option> *@
+                    @*         </select> *@
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>加班車作業線別</label> *@
+                    @*         <select asp-for="OvertimeOperationLine"> *@
+                    @*             <option>文湖線</option> *@
+                    @*         </select> *@
 
-                        </div>
-						<div class="col-md-4">
-                            <label>加班車作業時段</label>
-							<input asp-for="OvertimeTrainWork" class="form-control" />
-						</div>
-                        <div class="col-md-4">
-                            <label>加班車作業行駛起訖區間</label>
-                            <select>
-                                <option>南港展覽館站-動物園站</option>
-                            </select>
-                        </div>
-						<div class="col-md-4">
-                            <label>加班車作業站間數</label>
-                            <input asp-for="OvertimeTrainStation" class="form-control" value="23" />
-						</div>
-						<div class="col-md-4">
-                            <label>加班車作業公里</label>
-                            <input asp-for="OvertimeTrainKm" class="form-control" value="25.5" />
-                        </div>
-						<div class="col-md-4">
-                            <label>加班車作業發車次數</label>
-							<input asp-for="OvertimeTrainDeparture" class="form-control" />
-                        </div>
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>加班車作業時段</label> *@
+                    @*         <input asp-for="OvertimeTrainWork" class="form-control" /> *@
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>加班車作業行駛起訖區間</label> *@
+                    @*         <select> *@
+                    @*             <option>南港展覽館站-動物園站</option> *@
+                    @*         </select> *@
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>加班車作業站間數</label> *@
+                    @*         <input asp-for="OvertimeTrainStation" class="form-control" value="23" /> *@
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>加班車作業公里</label> *@
+                    @*         <input asp-for="OvertimeTrainKm" class="form-control" value="25.5" /> *@
+                    @*     </div> *@
+                    @*     <div class="col-md-4"> *@
+                    @*         <label>加班車作業發車次數</label> *@
+                    @*         <input asp-for="OvertimeTrainDeparture" class="form-control" /> *@
+                    @*     </div> *@
 
-                    </div>
+                    @* </div> *@
 
 
                 </div>
@@ -293,52 +293,52 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr align="center">
-							<th colspan="2">因素\路線</th><th align="center">文湖線</th>
+                            <th colspan="2">因素\路線</th><th align="center">文湖線</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-							<td rowspan="6" align="center">表訂</td>
-							<td>晨間佈車</td><td><input asp-for="MorningTrainKm" class="form-control km-input" value="157.50" /></td>
+                            <td rowspan="6" align="center">表訂</td>
+                            <td>晨間佈車</td><td><input asp-for="MorningTrainKm" class="form-control km-input" value="157.50" /></td>
                         </tr>
-						<tr>
-							<td>尖離峰收發車</td><td><input asp-for="PeakOffPeakTrainKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
-							<td>夜間收車</td><td><input asp-for="NightTrainKm" class="form-control km-input" value="51.00" /></td>
-						</tr>
-						<tr>
-							<td>加班車</td><td><input asp-for="TableOrderOvertimeTrainKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
-							<td>轉運列車</td><td><input asp-for="TransferTrainKm" class="form-control km-input" value="8.44" /></td>
-						</tr>
-						<tr>
-							<td>維修調度需求</td><td><input asp-for="TableOrderMaintenanceTrainKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
+                        <tr>
+                            <td>尖離峰收發車</td><td><input asp-for="PeakOffPeakTrainKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
+                            <td>夜間收車</td><td><input asp-for="NightTrainKm" class="form-control km-input" value="51.00" /></td>
+                        </tr>
+                        <tr>
+                            <td>加班車</td><td><input asp-for="TableOrderOvertimeTrainKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
+                            <td>轉運列車</td><td><input asp-for="TransferTrainKm" class="form-control km-input" value="8.44" /></td>
+                        </tr>
+                        <tr>
+                            <td>維修調度需求</td><td><input asp-for="TableOrderMaintenanceTrainKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
                             <td rowspan="4" align="center">臨時</td>
-							<td>加班車</td><td><input asp-for="TemporaryOvertimeTrainKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
-							<td>維修調度需求</td><td><input asp-for="TemporaryMaintenanceTrainKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
-							<td>異常事件調度</td><td><input asp-for="ExceptionEventKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
-							<td>其他（含測試車）</td><td><input asp-for="OtherUnloadedKm" class="form-control km-input" value="0.00" /></td>
-						</tr>
-						<tr>
-							<td colspan="2">合計</td><td id="TotalKm"></td>
-						</tr>
+                            <td>加班車</td><td><input asp-for="TemporaryOvertimeTrainKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
+                            <td>維修調度需求</td><td><input asp-for="TemporaryMaintenanceTrainKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
+                            <td>異常事件調度</td><td><input asp-for="ExceptionEventKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
+                            <td>其他（含測試車）</td><td><input asp-for="OtherUnloadedKm" class="form-control km-input" value="0.00" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">合計</td><td id="TotalKm"></td>
+                        </tr>
                     </tbody>
                 </table>
                 <!--系統計算-->
                 <p>備註：本日總行車公里= <input asp-for="TodayKmTotal" class="form-control" value="156888.3" />（含轉換軌及折轉區里程）</p>
             </div>
             <div>
-				<p><b>七、本日文湖線運量</b></p>
+                <p><b>七、本日文湖線運量</b></p>
                 <div class="d-flex align-items-center mb-3">
                     <label for="TodayTrainTotal" class="me-2 mb-0">文湖線：</label>
                     <input asp-for="TodayTrainTotal" class="form-control" style="width: 150px;" />
@@ -350,140 +350,139 @@
        </form>
 </div>
 
-    @section Scripts {
-        <script>
-            $(document).ready(function() {
-                // 添加新的事件群組
-                $("#addEventGroupBtn").click(function() {
-                    var groupsCount = $(".event-group").length;
-                    var newGroupIndex = groupsCount;
+@section Scripts {
+            <script>
+                $(document).ready(function() {
+                    // 添加新的事件群組
+                    $("#addEventGroupBtn").click(function() {
+                        var groupsCount = $(".event-group").length;
+                        var newGroupIndex = groupsCount;
 
-                    // 複製第一個事件群組
-                    var newGroup = $(".event-group:first").clone();
+                        // 複製第一個事件群組
+                        var newGroup = $(".event-group:first").clone();
 
-                    // 更新群組索引
-                    newGroup.find("input[type='text']").val("").attr("name", `EventGroups[${newGroupIndex}].Title`);
+                        // 更新群組索引
+                        newGroup.find("input[type='text']").val("").attr("name", `EventGroups[${newGroupIndex}].Title`);
 
-                    // 只保留第一個時間內容對
-                    var firstPair = newGroup.find(".time-content-pair:first").clone();
-                    newGroup.find(".time-content-container").empty().append(firstPair);
+                        // 只保留第一個時間內容對
+                        var firstPair = newGroup.find(".time-content-pair:first").clone();
+                        newGroup.find(".time-content-container").empty().append(firstPair);
 
-                    // 更新時間內容對索引
-                    firstPair.find("input[type='time']").val("").attr("name", `EventGroups[${newGroupIndex}].TimeEntries[0].Time`);
-                    firstPair.find("textarea").val("").attr("name", `EventGroups[${newGroupIndex}].TimeEntries[0].Content`);
-                    firstPair.find(".remove-pair").hide();
+                        // 更新時間內容對索引
+                        firstPair.find("input[type='time']").val("").attr("name", `EventGroups[${newGroupIndex}].TimeEntries[0].Time`);
+                        firstPair.find("textarea").val("").attr("name", `EventGroups[${newGroupIndex}].TimeEntries[0].Content`);
+                        firstPair.find(".remove-pair").hide();
 
-                    // 顯示移除群組按鈕
-                    newGroup.find(".remove-group-btn").show();
+                        // 顯示移除群組按鈕
+                        newGroup.find(".remove-group-btn").show();
 
-                    // 添加到容器
-                    $("#eventGroups").append(newGroup);
+                        // 添加到容器
+                        $("#eventGroups").append(newGroup);
 
-                    // 更新移除群組按鈕顯示邏輯
-                    updateRemoveGroupButtons();
-                });
-
-                // 添加新的時間內容對
-                $(document).on("click", ".add-pair-btn", function() {
-                    var eventGroup = $(this).closest(".event-group");
-                    var groupIndex = $(".event-group").index(eventGroup);
-                    var pairsContainer = eventGroup.find(".time-content-container");
-                    var pairsCount = pairsContainer.find(".time-content-pair").length;
-                    var newPairIndex = pairsCount;
-
-                    // 複製第一個時間內容對
-                    var newPair = pairsContainer.find(".time-content-pair:first").clone();
-
-                    // 更新時間內容對索引
-                    newPair.find("input[type='time']").val("").attr("name", `EventGroups[${groupIndex}].TimeEntries[${newPairIndex}].Time`);
-                    newPair.find("textarea").val("").attr("name", `EventGroups[${groupIndex}].TimeEntries[${newPairIndex}].Content`);
-
-                    // 顯示移除按鈕
-                    newPair.find(".remove-pair").show();
-
-                    // 添加到容器
-                    pairsContainer.append(newPair);
-
-                    // 更新移除按鈕顯示邏輯
-                    updateRemovePairButtons(eventGroup);
-                });
-
-                // 移除時間內容對
-                $(document).on("click", ".remove-pair", function() {
-                    var pair = $(this).closest(".time-content-pair");
-                    var eventGroup = pair.closest(".event-group");
-
-                    pair.remove();
-
-                    // 更新剩餘時間內容對的索引
-                    var groupIndex = $(".event-group").index(eventGroup);
-                    eventGroup.find(".time-content-pair").each(function(pairIndex) {
-                        $(this).find("input[type='time']").attr("name", `EventGroups[${groupIndex}].TimeEntries[${pairIndex}].Time`);
-                        $(this).find("textarea").attr("name", `EventGroups[${groupIndex}].TimeEntries[${pairIndex}].Content`);
+                        // 更新移除群組按鈕顯示邏輯
+                        updateRemoveGroupButtons();
                     });
 
-                    // 更新移除按鈕顯示邏輯
-                    updateRemovePairButtons(eventGroup);
-                });
+                    // 添加新的時間內容對
+                    $(document).on("click", ".add-pair-btn", function() {
+                        var eventGroup = $(this).closest(".event-group");
+                        var groupIndex = $(".event-group").index(eventGroup);
+                        var pairsContainer = eventGroup.find(".time-content-container");
+                        var pairsCount = pairsContainer.find(".time-content-pair").length;
+                        var newPairIndex = pairsCount;
 
-                // 移除事件群組
-                $(document).on("click", ".remove-group-btn", function() {
-                    var eventGroup = $(this).closest(".event-group");
-                    eventGroup.remove();
+                        // 複製第一個時間內容對
+                        var newPair = pairsContainer.find(".time-content-pair:first").clone();
 
-                    // 更新剩餘事件群組的索引
-                    $(".event-group").each(function(groupIndex) {
-                        // 更新群組標題索引
-                        $(this).find("input[type='text']").attr("name", `EventGroups[${groupIndex}].Title`);
+                        // 更新時間內容對索引
+                        newPair.find("input[type='time']").val("").attr("name", `EventGroups[${groupIndex}].TimeEntries[${newPairIndex}].Time`);
+                        newPair.find("textarea").val("").attr("name", `EventGroups[${groupIndex}].TimeEntries[${newPairIndex}].Content`);
 
-                        // 更新所有時間內容對的索引
-                        $(this).find(".time-content-pair").each(function(pairIndex) {
+                        // 顯示移除按鈕
+                        newPair.find(".remove-pair").show();
+
+                        // 添加到容器
+                        pairsContainer.append(newPair);
+
+                        // 更新移除按鈕顯示邏輯
+                        updateRemovePairButtons(eventGroup);
+                    });
+
+                    // 移除時間內容對
+                    $(document).on("click", ".remove-pair", function() {
+                        var pair = $(this).closest(".time-content-pair");
+                        var eventGroup = pair.closest(".event-group");
+
+                        pair.remove();
+
+                        // 更新剩餘時間內容對的索引
+                        var groupIndex = $(".event-group").index(eventGroup);
+                        eventGroup.find(".time-content-pair").each(function(pairIndex) {
                             $(this).find("input[type='time']").attr("name", `EventGroups[${groupIndex}].TimeEntries[${pairIndex}].Time`);
                             $(this).find("textarea").attr("name", `EventGroups[${groupIndex}].TimeEntries[${pairIndex}].Content`);
                         });
+
+                        // 更新移除按鈕顯示邏輯
+                        updateRemovePairButtons(eventGroup);
                     });
 
-                    // 更新移除群組按鈕顯示邏輯
-                    updateRemoveGroupButtons();
+                    // 移除事件群組
+                    $(document).on("click", ".remove-group-btn", function() {
+                        var eventGroup = $(this).closest(".event-group");
+                        eventGroup.remove();
+
+                        // 更新剩餘事件群組的索引
+                        $(".event-group").each(function(groupIndex) {
+                            // 更新群組標題索引
+                            $(this).find("input[type='text']").attr("name", `EventGroups[${groupIndex}].Title`);
+
+                            // 更新所有時間內容對的索引
+                            $(this).find(".time-content-pair").each(function(pairIndex) {
+                                $(this).find("input[type='time']").attr("name", `EventGroups[${groupIndex}].TimeEntries[${pairIndex}].Time`);
+                                $(this).find("textarea").attr("name", `EventGroups[${groupIndex}].TimeEntries[${pairIndex}].Content`);
+                            });
+                        });
+
+                        // 更新移除群組按鈕顯示邏輯
+                        updateRemoveGroupButtons();
+                    });
+
+                    // 更新時間內容對的移除按鈕顯示邏輯
+                    function updateRemovePairButtons(eventGroup) {
+                        var pairs = eventGroup.find(".time-content-pair");
+                        if (pairs.length === 1) {
+                            pairs.find(".remove-pair").hide();
+                        } else {
+                            pairs.find(".remove-pair").show();
+                        }
+                    }
+
+                    // 更新事件群組的移除按鈕顯示邏輯
+                    function updateRemoveGroupButtons() {
+                        if ($(".event-group").length === 1) {
+                            $(".remove-group-btn").hide();
+                        } else {
+                            $(".remove-group-btn").show();
+                        }
+                    }
                 });
 
-                // 更新時間內容對的移除按鈕顯示邏輯
-                function updateRemovePairButtons(eventGroup) {
-                    var pairs = eventGroup.find(".time-content-pair");
-                    if (pairs.length === 1) {
-                        pairs.find(".remove-pair").hide();
-                    } else {
-                        pairs.find(".remove-pair").show();
-                    }
-                }
-
-                // 更新事件群組的移除按鈕顯示邏輯
-                function updateRemoveGroupButtons() {
-                    if ($(".event-group").length === 1) {
-                        $(".remove-group-btn").hide();
-                    } else {
-                        $(".remove-group-btn").show();
-                    }
-                }
-            });
-
-            // 六、未載客列車里程數（公里）
-             // 當任何輸入變動時，重新計算
-            document.querySelectorAll('.km-input').forEach(input => {
-                input.addEventListener('input', calculateTotal);
-            });
-
-            function calculateTotal() {
-                let total = 0;
+                // 六、未載客列車里程數（公里）
+                 // 當任何輸入變動時，重新計算
                 document.querySelectorAll('.km-input').forEach(input => {
-                    let value = parseFloat(input.value);
-                    if (!isNaN(value)) total += value;
+                    input.addEventListener('input', calculateTotal);
                 });
-                document.getElementById('TotalKm').innerText = total.toFixed(2);
-            }
 
-            // 頁面載入完成後執行一次
-            window.addEventListener('DOMContentLoaded', calculateTotal);
-        </script>
+                function calculateTotal() {
+                    let total = 0;
+                    document.querySelectorAll('.km-input').forEach(input => {
+                        let value = parseFloat(input.value);
+                        if (!isNaN(value)) total += value;
+                    });
+                    document.getElementById('TotalKm').innerText = total.toFixed(2);
+                }
+
+                // 頁面載入完成後執行一次
+                window.addEventListener('DOMContentLoaded', calculateTotal);
+            </script>
     }
-
