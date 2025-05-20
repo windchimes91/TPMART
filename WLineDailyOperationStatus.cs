@@ -1,4 +1,4 @@
-﻿namespace TPMRTweb.Models
+namespace TPMRTweb.Models
 {
     public class WLineDailyOperationStatus
     {
@@ -27,7 +27,7 @@
         public string MaxAfternoonPeakPeriod { get; set; }
         public string MaxMorningOffPeakPeriod { get; set; }
         public string MaxAfternoonOffPeakPeriod { get; set; }
-        public string RegularMorningOvertimeWork { get;set; }
+        public string RegularMorningOvertimeWork { get; set; }
         public string RegularAfternoonOvertimeWork { get; set; }
         public string TemporaryMorningOvertimeWork { get; set; }
         public string TemporaryAfternoonOvertimeWork { get; set; }
@@ -66,18 +66,19 @@
 
 
         //六、未載客列車里程數（公里）
-        public string MorningTrainKm { get; set; }
-        public string PeakOffPeakTrainKm { get; set; }
-        public string NightTrainKm { get; set; }
-        public string TableOrderOvertimeTrainKm { get; set; }
-        public string TransferTrainKm { get; set; }
-        public string TableOrderMaintenanceTrainKm { get; set; }
-        public string TemporaryOvertimeTrainKm { get; set; }
-        public string TemporaryMaintenanceTrainKm { get; set; }
-        public string ExceptionEventKm { get; set; }
-        public string OtherUnloadedKm { get; set; }
-        public string TodayKmTotal { get; set; }
-        public string TotalUnloadedKm { get; set; }
+        public float MorningTrainKm { get; set; }
+        public float PeakOffPeakTrainKm { get; set; }
+        public float NightTrainKm { get; set; }
+        public float TableOrderOvertimeTrainKm { get; set; }
+        public float TransferTrainKm { get; set; }
+        public float TableOrderMaintenanceTrainKm { get; set; }
+        public float TemporaryOvertimeTrainKm { get; set; }
+        public float TemporaryMaintenanceTrainKm { get; set; }
+        public float ExceptionEventKm { get; set; }
+        public float OtherUnloadedKm { get; set; }
+        public float TotalKm { get; set; }
+        public float TodayKmTotal { get; set; }
+
 
 
         //七、本日文湖線運量
@@ -98,4 +99,3 @@
         public string Content { get; set; }
     }
 }
-
