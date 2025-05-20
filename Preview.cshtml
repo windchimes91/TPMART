@@ -1,4 +1,4 @@
-﻿@model TPMRTweb.Models.WLineDailyOperationStatus
+@model TPMRTweb.Models.WLineDailyOperationStatus
 @{
     ViewData["Title"] = "預覽文湖線每日行車運轉狀況";
 }
@@ -85,14 +85,14 @@
 
     <div class="section-title">三、急待解決事項</div>
     @if (Model.Pending != null && Model.Pending.Any())
-	{
-		<p class="red-text">@Model.Pending</p>
-	}
-	else
-	{
+    {
+        <p class="red-text">@Model.Pending</p>
+    }
+    else
+    {
         <p class="red-text">無</p>
-	})
-    
+    }
+
 
     <div class="section-title">四、電聯車使用概況</div>
     <p>（一）各時段使用列車數</p>
@@ -154,8 +154,8 @@
                 <th>上午尖峰</th>
                 <th>下午尖峰</th>
                 <th>離峰</th>
-				<th>尖峰</th>
-				<th>離峰</th>
+                <th>尖峰</th>
+                <th>離峰</th>
             </tr>
         </thead>
         <tbody>
@@ -163,26 +163,26 @@
                 <td>VAL256</td>
                 <td>-</td>
                 <td>-</td>
-				<td>-</td>
-				<td>-</td>
-				<td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
             </tr>
-			<tr>
-				<td>BT370</td>
-				<td>-</td>
-				<td>-</td>
-                <td>-</td>
-				<td>-</td>
-				<td>-</td>
-			</tr>
-			<tr>
-				<td>合計</td>
-				<td>-</td>
-				<td>-</td>
-				<td>-</td>
+            <tr>
+                <td>BT370</td>
                 <td>-</td>
                 <td>-</td>
-			</tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>合計</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
         </tbody>
     </table>
 
@@ -195,7 +195,7 @@
                 <th rowspan="2">線別</th>
                 <th colspan="2">5分以上<br />延誤件數（件）</th>
                 <th colspan="2">萬列車公里數</th>
-				<th rowspan="2">各線運行績效(C/A)</th>
+                <th rowspan="2">各線運行績效(C/A)</th>
             </tr>
             <tr>
                 <th>不可控</th>
@@ -215,40 +215,40 @@
             </tr>
         </tbody>
     </table>
-	<p>（二）班距</p>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th colspan="2">區段</th>
-				<th>公里</th>
-				<th colspan="2">尖峰/與上週同日偏差</th>
+    <p>（二）班距</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2">區段</th>
+                <th>公里</th>
+                <th colspan="2">尖峰/與上週同日偏差</th>
                 <th colspan="2">離峰/與上週同日偏差</th>
             </tr>
         </thead>
-		<tbody>
-			<tr>
-				<td rowspan="4">主線</td>
-				<td>南港展覽館站-動物園站</td>
-				<td>25.5</td>
-				<td>-</td>
-				<td>(-00:01)</td>
-				<td>-</td>
-				<td>(-00:11)</td>
-			</tr>
-			<tr>
-                <td colspan="2">六張犁-南港展覽館上行<br /><span class="text-end me-3">早上最密</span></td>
-				<td>-</td>
-                <td>(00:00)</td>
-				<td>-</td>
-				<td>-</td>
+        <tbody>
+            <tr>
+                <td rowspan="4">主線</td>
+                <td>南港展覽館站-動物園站</td>
+                <td>25.5</td>
+                <td>-</td>
+                <td>(-00:01)</td>
+                <td>-</td>
+                <td>(-00:11)</td>
             </tr>
-			<tr>
-				<td colspan="2">港墘-動物園下行<br /><span class="text-end me-3">下午最密</span></td>
-				<td>-</td>
-				<td>(00:00)</td>
-				<td>-</td>
-				<td>-</td>
-			</tr>
+            <tr>
+                <td colspan="2">六張犁-南港展覽館上行<br /><span class="text-end me-3">早上最密</span></td>
+                <td>-</td>
+                <td>(00:00)</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td colspan="2">港墘-動物園下行<br /><span class="text-end me-3">下午最密</span></td>
+                <td>-</td>
+                <td>(00:00)</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
             <tr>
                 <td colspan="2">系統目標值</td>
                 <td colspan="2">2至4分鐘</td>
@@ -262,9 +262,9 @@
             <tr>
                 <th colspan="2">營運模式</th>
                 <th>公里</th>
-                <th colspan="3">速率/與上週同日偏差<br/>(KPH)</th>
-                <th>延滯時間<br/>(秒/車)</th>
-				<th>準點率<br />(%)</th>
+                <th colspan="3">速率/與上週同日偏差<br />(KPH)</th>
+                <th>延滯時間<br />(秒/車)</th>
+                <th>準點率<br />(%)</th>
             </tr>
         </thead>
         <tbody>
@@ -276,7 +276,7 @@
                 <td>64</td>
                 <td>(-0.02)</td>
                 <td>-</td>
-				<td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td colspan="2">系統目標值</td>
@@ -286,69 +286,52 @@
             </tr>
         </tbody>
     </table>
-	<p>（四）發車次數</p>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
+    <p>（四）發車次數</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
                 <th colspan="3"></th>
-				<th colspan="3">行駛區間</th>
-				<th colspan="2">公里</th>
-				<th>發車次數</th>
+                <th colspan="3">行駛區間</th>
+                <th colspan="2">公里</th>
+                <th>發車次數</th>
             </tr>
         </thead>
         <tbody>
-			<tr>
-				<td rowspan="4" colspan="3">主線<br />表定區間</td>
-				<td colspan="3">南港展覽館站-動物園站</td>
-				<td colspan="2">-</td>
-				<td>-</td>
-			</tr>
-			<tr>
+            <tr>
+                <td rowspan="4" colspan="3">主線<br />表定區間</td>
+                <td colspan="3">南港展覽館站-動物園站</td>
+                <td colspan="2">-</td>
+                <td>-</td>
+            </tr>
+            <tr>
                 <td colspan="3">非端點站首班車</td>
                 <td colspan="2">-</td>
-				<td>-</td>
-			</tr>
-			<tr>
+                <td>-</td>
+            </tr>
+            <tr>
                 <td colspan="3">轉運車</td>
                 <td colspan="2">-</td>
-				<td>-</td>
-			</tr>
+                <td>-</td>
+            </tr>
             <tr>
                 <td colspan="3">轉換軌(不含異常換車)</td>
                 <td colspan="2">-</td>
-				<td>0</td>
-			</tr>
+                <td>0</td>
+            </tr>
             <!--這裡可能會依資料多寡變化-->
             <tr>
-				<td rowspan="11">加班車及延駛作業</td>
-				<td rowspan="5">加班車作業</td>
-				<td></td>
-				<td>線別</td>
-				<td>時段</td>
+                <td rowspan="11">加班車及延駛作業</td>
+                <td rowspan="5">加班車作業</td>
+                <td></td>
+                <td>線別</td>
+                <td>時段</td>
                 <td>行駛起訖區間</td>
                 <td>站間數</td>
-				<td>公里</td>
-				<td>發車次數</td>
-            </tr>
-			<tr>
-				<td rowspan="2">常態</td>
-                <td>-</td>
-				<td>-</td>
-				<td>-</td>
-				<td>-</td>
-                <td>-</td>
-                <td>-</td>
-			</tr>
-			<tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
+                <td>公里</td>
+                <td>發車次數</td>
             </tr>
             <tr>
-				<td rowspan="2">臨時</td>
+                <td rowspan="2">常態</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -365,8 +348,25 @@
                 <td>-</td>
             </tr>
             <tr>
-				<td colspan="7">總合計</td>
-				<td>-</td>
+                <td rowspan="2">臨時</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td colspan="7">總合計</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td rowspan="5">延駛作業</td>
@@ -465,7 +465,7 @@
             </tr>
             <tr>
                 <td colspan="2">合計</td>
-                <td id="TotalKm"></td>
+                <td>@Model.TotalKm</td>
             </tr>
         </tbody>
     </table>
