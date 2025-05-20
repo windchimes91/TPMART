@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.IO;
@@ -115,7 +115,23 @@ namespace TPMRTweb.Controllers
                 }
             }
 
+            
+
+
             var savedModel = model;
+
+            var totalkm = savedModel.MorningTrainKm +
+                savedModel.PeakOffPeakTrainKm +
+                savedModel.NightTrainKm +
+                savedModel.TableOrderOvertimeTrainKm +
+                savedModel.TransferTrainKm +
+                savedModel.TableOrderMaintenanceTrainKm +
+                savedModel.TemporaryOvertimeTrainKm +
+                savedModel.TemporaryMaintenanceTrainKm +
+                savedModel.ExceptionEventKm +
+                savedModel.OtherUnloadedKm;
+
+
 
             var viewModel = new WLineDailyOperationStatus
             {
@@ -181,7 +197,7 @@ namespace TPMRTweb.Controllers
                 ExceptionEventKm = savedModel.ExceptionEventKm,
                 OtherUnloadedKm = savedModel.OtherUnloadedKm,
                 TodayKmTotal = savedModel.TodayKmTotal,
-                TotalUnloadedKm = savedModel.TotalUnloadedKm,
+                TotalKm = totalkm,
 
                 // 本日文湖線運量
                 TodayTrainTotal = savedModel.TodayTrainTotal
@@ -254,7 +270,7 @@ namespace TPMRTweb.Controllers
                     body.AppendChild(new Paragraph(new Run(new Text($"（二）延誤1分30秒～5分鐘事件{model.D5ControllableCountToday}件"))));
                     body.AppendChild(new Paragraph(new Run(new Text($"（三）延誤5分鐘以上不可抗力歸責事件{model.U5UncontrollableCountToday}件"))));
                     body.AppendChild(new Paragraph(new Run(new Text($"（四）延誤1分30秒～5分鐘不可抗力歸責事件{model.D5UncontrollableCountToday}件"))));
-                    
+
 
                     body.AppendChild(new Paragraph(new Run(new Text("三、急待解決事項"))));
                     if (string.IsNullOrWhiteSpace(model.Pending))
